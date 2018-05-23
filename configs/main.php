@@ -9,6 +9,23 @@ class MainConfigs
     private function __clone() {}
     private function __construct() {}
 
+    private $configs = [
+        'commands' => [
+            [
+                'alias'      => 'calculateIntegral',
+                'class_name' => 'IntegralCalculator\Command\CalculateIntegral',
+                'version'    => 1,
+            ],
+            //'getMethods' => null,
+        ],
+
+        'methods' => [
+            'id'   => 1,
+            'name' => 'Rectangle method',
+            'class_name' => 'Rectangle method',
+        ],
+    ];
+
     public static function getInstance()
     {
         if (null === self::$instance)
@@ -18,22 +35,14 @@ class MainConfigs
         return self::$instance;
     }
 
-    public function get()
+    public function getCommandClassName(string $alias, int $version)
     {
-        return [
-            'commands' => [
-                [
-                    'alias' => 'calculateIntegral',
-                    'version' => 1
-                ],
-                //'getMethods' => null,
-            ],
+        foreach ($this->configs['commands'] as $command) {
+            if ($command['alias'] == $alias && $command['version'] == $version) {
+                return $command['class_name'];
+            }
+        }
 
-            'methods' => [
-                'id'   => 1,
-                'name' => 'Rectangle method',
-                'class_name' => 'Rectangle method',
-            ],
-        ];
+        return false;
     }
 }

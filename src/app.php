@@ -2,7 +2,6 @@
 
 namespace IntegralCalculator;
 
-
 use IntegralCalculator\Core\CommandManager\CommandManagerFactory;
 
 class App
@@ -44,8 +43,12 @@ class App
   ),
 );
 
-            $command = (new CommandManagerFactory())->create($data);
-            //$package = (new PackageFactory())->create($data);
+            $commandManager = (new CommandManagerFactory())->create($data);
+            $command        = $commandManager->createCommand();
+
+            $command->process();
+
+
         } catch (\Exception $exception) {
             http_response_code(415);
             echo json_encode(["error" => $exception->getMessage()]);

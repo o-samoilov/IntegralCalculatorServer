@@ -4,18 +4,25 @@ namespace IntegralCalculator\Core\CommandManager;
 
 class CommandManager
 {
-    private $command;
+    private $alias;
     private $version;
-    private $params;
+    private $input;
 
-    public function __construct(string $command, int $version, array $params)
+    public function __construct(string $alias, int $version, array $input)
     {
-        $this->command = $command;
+        $this->alias   = $alias;
         $this->version = $version;
-        $this->params  = $params;
+        $this->input   = $input;
     }
 
     public function createCommand() {
-        $command = 1;
+        $commandFactory = new CommandFactory();
+        $command = $commandFactory->create([
+            'alias'   => $this->alias,
+            'version' => $this->version,
+            'input'   => $this->input,
+        ]);
+
+        return $command === false ? false : $command;
     }
 }
