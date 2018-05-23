@@ -1,15 +1,63 @@
 <?php
 
-http_response_code(200);
+namespace IntegralCalculator;
 
+require '../src/bootstrap.php';
+require '../src/app.php';
+
+$bootstrap = new Bootstrap();
+$bootstrap->process();
+
+$app = new App();
+$app->process();
+
+/*
 $data = [
-    'func' => 'L(x) = POW(x, 3)',
-    'surface'  => 'f(x, z) = SIN(x) * z',
-    'xmax'     => -5,
-    'xmin'     => 2,
+    'metadata' => [
+        [
+            'id'    => 'func',
+            'name'  => 'Function',
+            'value' => 'L(x) = POW(x, 3)',
+        ],
+        [
+            'id'    => 'surface',
+            'name'  => 'Surface',
+            'value' => 'f(x, z) = SIN(x) * z',
+        ],
+        [
+            'id'    => 'xmin',
+            'name'  => 'xmin',
+            'value' => -5,
+        ],
+        [
+            'id'    => 'xmax',
+            'name'  => 'xmax',
+            'value' => 5,
+        ],
+    ],
+
     'integral_sum' => [
-        'rectangle_method' => 21,
+        [
+            'id'  => 'metod1213',
+            'name' => 'Метод прямоугольников',
+            'value'  => 33,
+        ],
+        [
+            'id'  => 'metod1213',
+            'name' => 'Метод прямоугольников22',
+            'value'  => 123123,
+        ],
+        [
+            'id'  => 'metod1213',
+            'name' => 'Метод прямоугольников',
+            'value'  => 33,
+        ],
+        [
+            'id'  => 'metod1213',
+            'name' => 'Метод прямоугольников22',
+            'value'  => 123123,
+        ],
     ]
 ];
 
-echo json_encode($data);
+echo json_encode($data);*/
