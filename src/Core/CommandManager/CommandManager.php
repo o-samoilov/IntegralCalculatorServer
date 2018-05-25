@@ -23,6 +23,6 @@ class CommandManager
             'input'   => $this->input,
         ]);
 
-        return $command === false ? false : $command;
+        return $command;
     }
 }

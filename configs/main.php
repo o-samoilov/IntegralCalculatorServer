@@ -20,9 +20,11 @@ class MainConfigs
         ],
 
         'methods' => [
-            'id'   => 1,
-            'name' => 'Rectangle method',
-            'class_name' => 'Rectangle method',
+            [
+                'id'   => 1,
+                'name' => 'Rectangle method',
+                'class_name' => 'IntegralCalculator\Command\Model\Methods\RectangleMethod',
+            ],
         ],
     ];
 
@@ -40,6 +42,17 @@ class MainConfigs
         foreach ($this->configs['commands'] as $command) {
             if ($command['alias'] == $alias && $command['version'] == $version) {
                 return $command['class_name'];
+            }
+        }
+
+        return false;
+    }
+
+    public function getMethodMetadata(int $id)
+    {
+        foreach ($this->configs['methods'] as $method) {
+            if ($method['id'] == (string)$id ) {
+                return $method;
             }
         }
 

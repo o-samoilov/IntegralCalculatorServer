@@ -10,9 +10,9 @@ class App
     {
         try {
             $data = json_decode(trim(file_get_contents('php://input')), true);
-
+$a = 1;
             //todo remove only test data
-            $data = array(
+            /*$data = array(
                 'command' => 'calculateIntegral',
                 'version' => 1,
   'params' =>
@@ -31,30 +31,29 @@ class App
           ),
       'surface' =>
           array (
-              'func' => 'SIN(x) * z',
+              'func' => 'SIN(x) * y',
               'vars' =>
                   array (
                       0 => 'x',
-                      1 => 'z',
+                      1 => 'y',
                   ),
           ),
       'xMin' => -5,
       'xMax' => 5,
   ),
-);
+);*/
 
             $commandManager = (new CommandManagerFactory())->create($data);
             $command        = $commandManager->createCommand();
 
             $command->process();
 
+            echo json_encode($command->getOutput());
 
         } catch (\Exception $exception) {
             http_response_code(415);
             echo json_encode(["error" => $exception->getMessage()]);
             return;
         }
-
-
     }
 }

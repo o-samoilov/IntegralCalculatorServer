@@ -15,7 +15,9 @@ class CommandFactory implements IFactory
         );
 
         $command = new $commandClass;
-        $command->validate($params['input']);
+        if (!$command->validate($params['input'])) {
+            throw new \Exception('Invalid params');
+        }
         $command->set($params['input']);
 
         return $command;
