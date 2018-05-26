@@ -7,11 +7,6 @@ use IntegralCalculator\Configs\MainConfigs;
 
 class MethodFactory implements IFactory
 {
-    public function __construct()
-    {
-
-    }
-
     public function create(array $data) {
 
         $methodMetadata = MainConfigs::getInstance()->getMethodMetadata($data['method_id']);

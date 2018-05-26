@@ -6,11 +6,6 @@ use IntegralCalculator\Core\Model\IFactory;
 
 class CommandManagerFactory implements IFactory
 {
-    public function __construct()
-    {
-
-    }
-
     public function create(array $data) {
         if (!isset($data['command'])) {
             throw new \Exception('Invalid command');

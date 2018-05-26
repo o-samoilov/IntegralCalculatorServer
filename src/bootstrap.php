@@ -14,6 +14,11 @@ class Bootstrap
 
     public function process()
     {
+        header('Access-Control-Allow-Origin: *');
+
+        ob_start();
+        error_reporting( E_ERROR );
+
         register_shutdown_function([$this, 'fatalHandler']);
 
         spl_autoload_register(function ($class_name) {
@@ -34,7 +39,9 @@ class Bootstrap
     {
         $error = error_get_last();
 
-        if (!is_null($error)) {
+        if (!is_null($error) && $error['type'] != E_WARNING) {
+
+            ob_clean();
             echo json_encode(["error" => "Invalid request"]);
         }
     }

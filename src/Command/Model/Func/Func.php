@@ -20,7 +20,7 @@ class Func
 
         $evalStr = $this->func;
         foreach ($nums as $var => $num) {
-            //todo проверить есть ли $var в $this->>vars
+            //todo проверить есть ли $var в $this->vars
             //если нет ошибка
 
             $evalStr = str_replace([$var], $num, $evalStr);

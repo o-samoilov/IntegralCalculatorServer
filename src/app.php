@@ -9,10 +9,10 @@ class App
     public function process()
     {
         try {
-            $data = json_decode(trim(file_get_contents('php://input')), true);
-$a = 1;
+            $data = (array)json_decode(trim(file_get_contents('php://input')), true);
+
             //todo remove only test data
-            /*$data = array(
+            $data = array(
                 'command' => 'calculateIntegral',
                 'version' => 1,
   'params' =>
@@ -23,7 +23,7 @@ $a = 1;
           ),
       'func' =>
           array (
-              'func' => 'POW(x, 3)',
+              'func' => 'POW(x, 0.5)',
               'vars' =>
                   array (
                       0 => 'x',
@@ -31,7 +31,7 @@ $a = 1;
           ),
       'surface' =>
           array (
-              'func' => 'SIN(x) * y',
+              'func' => '1',
               'vars' =>
                   array (
                       0 => 'x',
@@ -41,7 +41,7 @@ $a = 1;
       'xMin' => -5,
       'xMax' => 5,
   ),
-);*/
+);
 
             $commandManager = (new CommandManagerFactory())->create($data);
             $command        = $commandManager->createCommand();

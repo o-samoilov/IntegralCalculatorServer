@@ -9,6 +9,18 @@ class MainConfigs
     private function __clone() {}
     private function __construct() {}
 
+    public static function getInstance()
+    {
+        if (null === self::$instance)
+        {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
+    private const PRODUCTION_MODE = 'PRODUCTION';
+    private const DEVELOP_MODE    = 'DEVELOP';
+
     private $configs = [
         'commands' => [
             [
@@ -26,16 +38,9 @@ class MainConfigs
                 'class_name' => 'IntegralCalculator\Command\Model\Methods\RectangleMethod',
             ],
         ],
-    ];
 
-    public static function getInstance()
-    {
-        if (null === self::$instance)
-        {
-            self::$instance = new self();
-        }
-        return self::$instance;
-    }
+        'mode' => self::PRODUCTION_MODE
+    ];
 
     public function getCommandClassName(string $alias, int $version)
     {
@@ -57,5 +62,9 @@ class MainConfigs
         }
 
         return false;
+    }
+
+    public function isProductionMode () {
+        return $this->configs['mode'] === self::PRODUCTION_MODE;
     }
 }
