@@ -15,8 +15,7 @@ class MethodFactory implements IFactory
         return new $methodClassName(
             $data['func'],
             $data['surface'],
-            $data['xmin'],
-            $data['xmax'],
+            $data['intervals'],
             $methodMetadata['id'],
             $methodMetadata['name']
         );

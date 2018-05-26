@@ -11,7 +11,7 @@ class CalculateIntegral extends AbstractCommand
 {
     private const STEP     = 0.01;
     private const EPS      = 0.00001;
-    private const INFINITY = 1 / 0.000000000001;
+    private const INFINITY = 1 / 0.000000001;
 
     private $func;
     private $surface;
@@ -61,36 +61,16 @@ class CalculateIntegral extends AbstractCommand
     public function process()
     {
 
-        $allowedIntervals = $this->getAllowedIntervals();
-        if (is_infinite($allowedIntervals)) {
+        $intervals = $this->getAllowedIntervals();
+        if (is_infinite($intervals)) {
             $this->output = array_merge($this->getMetadata(), $this->getIntegralSumWithStaticValue('Infinity'));
+            return;
+        } elseif (count($intervals) == 0) {
+            $this->output = array_merge($this->getMetadata(), $this->getIntegralSumWithStaticValue('0'));
             return;
         }
 
-        $integralSum = [
-            'integral_sum' => []
-        ];
-
-        foreach ($this->methods as $methodId) {
-
-            $method = (new MethodFactory())->create([
-                'method_id' => $methodId,
-                'func'      => $this->func,
-                'surface'   => $this->surface,
-                'xmin'      => $this->xMin,
-                'xmax'      => $this->xMax,
-            ]);
-
-            $method->process();
-
-            $integralSum['integral_sum'][] = [
-                'id'    => $method->getId(),
-                'name'  => $method->getName(),
-                'value' => $method->getOutput(),
-            ];
-        }
-
-        $this->output = array_merge($this->getMetadata(), $integralSum);
+        $this->output = array_merge($this->getMetadata($intervals), $this->getIntegralSum($intervals));
     }
 
     /*
@@ -104,40 +84,16 @@ class CalculateIntegral extends AbstractCommand
 
         for ($x = $this->xMin; $x <= $this->xMax; $x += self::STEP) {
 
-            //Y
             $y = $this->func->getValueFunc(['x' => $x]);
-
-            if ($y > self::INFINITY) {
-                return INF;
-            }
-
-            if (is_nan($y)) {
-
-                //start point
-                if ($startInterval == $x) {
-                    $startInterval += self::STEP;
-                    continue;
-                }
-
-                $intervals[] = [
-                    'start' => $startInterval,
-                    'end'   => $x - self::STEP,
-                ];
-
-                $startInterval += self::STEP;
-            }
-
-            //Z
             $z = $this->surface->getValueFunc(['x' => $x, 'y' => $y]);
 
-            if ($z > self::INFINITY) {
+            if (abs($y) > self::INFINITY || abs($z) > self::INFINITY) {
                 return INF;
             }
 
-            if (is_nan($z)) {
-
+            if (is_nan($y) || is_nan($z)) {
                 if ($startInterval == $x) {
-                    $startInterval += self::STEP;
+                    $startInterval = $x + self::STEP;
                     continue;
                 }
 
@@ -146,7 +102,8 @@ class CalculateIntegral extends AbstractCommand
                     'end'   => $x - self::STEP,
                 ];
 
-                $startInterval += self::STEP;
+                $startInterval = $x + self::STEP;
+                continue;
             }
 
             if ($x >= $this->xMax - self::EPS) {
@@ -160,7 +117,16 @@ class CalculateIntegral extends AbstractCommand
         return $intervals;
     }
 
-    private function getMetadata() {
+    private function getMetadata($intervals = []) {
+        $intervalsOutput = [];
+
+        foreach ($intervals as $interval) {
+            $intervalsOutput[] = [
+                'start' => round($interval['start'], 2),
+                'end'   => round($interval['end'], 2),
+            ];
+        }
+
         return [
             'metadata' => [
                 [
@@ -174,22 +140,39 @@ class CalculateIntegral extends AbstractCommand
                     'value' => $this->surface->getString(),
                 ],
                 [
-                    'id'    => 'xmin',
-                    'name'  => 'xmin',
-                    'value' => $this->xMin,
-                ],
-                [
-                    'id'    => 'xmax',
-                    'name'  => 'xmax',
-                    'value' => $this->xMax,
+                    'id'    => 'intervals',
+                    'name'  => 'Intervals',
+                    'value' => $intervalsOutput,
                 ],
             ],
         ];
     }
 
-    private function getIntegralSum()
+    private function getIntegralSum(array $intervals)
     {
+        $integralSum = [
+            'integral_sum' => []
+        ];
 
+        foreach ($this->methods as $methodId) {
+
+            $method = (new MethodFactory())->create([
+                'method_id' => $methodId,
+                'func'      => $this->func,
+                'surface'   => $this->surface,
+                'intervals' => $intervals
+            ]);
+
+            $method->process();
+
+            $integralSum['integral_sum'][] = [
+                'id'    => $method->getId(),
+                'name'  => $method->getName(),
+                'value' => $method->getOutput(),
+            ];
+        }
+
+        return $integralSum;
     }
 
     private function getIntegralSumWithStaticValue(string $value)

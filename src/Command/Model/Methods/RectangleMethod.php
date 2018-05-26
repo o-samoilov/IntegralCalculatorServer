@@ -4,65 +4,45 @@ namespace IntegralCalculator\Command\Model\Methods;
 
 use IntegralCalculator\Command\Model\Func\Func;
 
-class RectangleMethod
+class RectangleMethod extends Method
 {
-    private const STEP = 0.001;
-
-    private $func;
-    private $surface;
-    private $xmin;
-    private $xmax;
-    private $id;
-    private $name;
-
-    private $sum = 0;
-
     public function __construct(
         Func $func,
         Func $surface,
-        float $xmin,
-        float $xmax,
+        array $intervals,
         int $id,
         string $name
         )
     {
-        $this->func = $func;
-        $this->surface = $surface;
-        $this->xmin = $xmin;
-        $this->xmax = $xmax;
-        $this->id   = $id;
-        $this->name = $name;
+        $this->func      = $func;
+        $this->surface   = $surface;
+        $this->intervals = $intervals;
+        $this->id        = $id;
+        $this->name      = $name;
     }
 
     public function process()
     {
-        $sum = 0;
+        foreach ($this->intervals as $interval) {
 
-        for ($x = $this->xmin; $x <= $this->xmax; $x += self::STEP) {
+            $sum = 0;
 
-            $x1 = $x;
-            $y1 = $this->func->getValueFunc(['x' => $x1]);
+            for ($x = $interval['start']; $x <= $interval['end']; $x += self::STEP) {
 
-            $x2 = $x + self::STEP;
-            $y2 = $this->func->getValueFunc(['x' => $x2]);
+                $x1 = $x;
+                $y1 = $this->func->getValueFunc(['x' => $x1]);
 
-            $z = $this->surface->getValueFunc(['x' => ($x1 + $x2) / 2, 'y' => ($y1 + $y2) / 2]);
+                $x2 = $x + self::STEP;
+                $y2 = $this->func->getValueFunc(['x' => $x2]);
 
-            $sum += sqrt(pow($x2 - $x1, 2) + pow($y2 - $y1, 2)) * $z;
+                $z = $this->surface->getValueFunc(['x' => ($x1 + $x2) / 2, 'y' => ($y1 + $y2) / 2]);
+
+                $sum += sqrt(pow($x2 - $x1, 2) + pow($y2 - $y1, 2)) * $z;
+            }
+
+            $this->sum += $sum;
+
         }
-
-        $this->sum += $sum;
     }
 
-    public function getOutput() {
-        return round($this->sum, 3);
-    }
-
-    public function getName() {
-        return $this->name;
-    }
-
-    public function getId() {
-        return $this->id;
-    }
 }
