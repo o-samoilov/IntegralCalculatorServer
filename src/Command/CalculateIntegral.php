@@ -9,9 +9,9 @@ use IntegralCalculator\Core\Model\AbstractCommand;
 
 class CalculateIntegral extends AbstractCommand
 {
-    private const STEP     = 0.01;
+    private const STEP     = 0.0001;
     private const EPS      = 0.00001;
-    private const INFINITY = 1 / 0.000000001;
+    private const INFINITY = 100000;//100k
 
     private $func;
     private $surface;
