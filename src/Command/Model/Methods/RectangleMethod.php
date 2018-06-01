@@ -37,7 +37,8 @@ class RectangleMethod extends Method
 
                 $z = $this->surface->getValueFunc(['x' => ($x1 + $x2) / 2, 'y' => ($y1 + $y2) / 2]);
 
-                $sum += sqrt(pow($x2 - $x1, 2) + pow($y2 - $y1, 2)) * $z;
+                $temp = sqrt(pow($x2 - $x1, 2) + pow($y2 - $y1, 2)) * $z;
+                $sum += !is_nan($temp) ? $temp : 0;
             }
 
             $this->sum += $sum;

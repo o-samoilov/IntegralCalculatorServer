@@ -10,8 +10,8 @@ use IntegralCalculator\Core\Model\AbstractCommand;
 class CalculateIntegral extends AbstractCommand
 {
     private const STEP     = 0.0001;
-    private const EPS      = 0.00001;
-    private const INFINITY = 100000;//100k
+    private const EPS      = 0.0001;
+    private const INFINITY = 10000;//10k
 
     private $func;
     private $surface;
@@ -122,8 +122,8 @@ class CalculateIntegral extends AbstractCommand
 
         foreach ($intervals as $interval) {
             $intervalsOutput[] = [
-                'start' => round($interval['start'], 2),
-                'end'   => round($interval['end'], 2),
+                'start' => round($interval['start'], 4),
+                'end'   => round($interval['end'], 4),
             ];
         }
 
