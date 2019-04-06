@@ -7,6 +7,8 @@ use IntegralCalculator\Core\Model\IFactory;
 
 class CommandFactory implements IFactory
 {
+    // ########################################
+
     public function create(array $params)
     {
         $commandClass = MainConfigs::getInstance()->getCommandClassName(
@@ -14,7 +16,7 @@ class CommandFactory implements IFactory
             $params['version']
         );
 
-        $command = new $commandClass;
+        $command = new $commandClass();
         if (!$command->validate($params['input'])) {
             throw new \Exception('Invalid params');
         }
@@ -22,4 +24,6 @@ class CommandFactory implements IFactory
 
         return $command;
     }
+
+    // ########################################
 }

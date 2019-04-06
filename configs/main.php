@@ -7,14 +7,15 @@ class MainConfigs
     private static $instance = null;
 
     private function __clone() {}
+
     private function __construct() {}
 
     public static function getInstance()
     {
-        if (null === self::$instance)
-        {
+        if (null === self::$instance) {
             self::$instance = new self();
         }
+
         return self::$instance;
     }
 
@@ -33,14 +34,16 @@ class MainConfigs
 
         'methods' => [
             [
-                'id'   => 1,
-                'name' => 'Rectangle method',
+                'id'         => 1,
+                'name'       => 'Rectangle method',
                 'class_name' => 'IntegralCalculator\Command\Model\Methods\RectangleMethod',
             ],
         ],
 
         'mode' => self::PRODUCTION_MODE
     ];
+
+    // ########################################
 
     public function getCommandClassName(string $alias, int $version)
     {
@@ -53,10 +56,12 @@ class MainConfigs
         return false;
     }
 
+    // ########################################
+
     public function getMethodMetadata(int $id)
     {
         foreach ($this->configs['methods'] as $method) {
-            if ($method['id'] == (string)$id ) {
+            if ($method['id'] == (string)$id) {
                 return $method;
             }
         }
@@ -64,7 +69,17 @@ class MainConfigs
         return false;
     }
 
-    public function isProductionMode () {
+    // ########################################
+
+    public function isProductionMode()
+    {
         return $this->configs['mode'] === self::PRODUCTION_MODE;
     }
+
+    public function isDevelopMode()
+    {
+        return $this->configs['mode'] === self::DEVELOP_MODE;
+    }
+
+    // ########################################
 }

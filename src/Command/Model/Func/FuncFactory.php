@@ -44,6 +44,8 @@ class FuncFactory implements IFactory
         'POW' => 'pow',
     ];
 
+    // ########################################
+
     public function create(array $data)
     {
         if (!is_array($data['vars']) || count($data['vars']) == 0){
@@ -59,6 +61,8 @@ class FuncFactory implements IFactory
         return new Func($this->getFunc($data['func']), $data['vars']);
     }
 
+    // ########################################
+
     private function isValid(string$func) {
         $func = str_replace(array_merge($this->validExpressions, $this->vars), "", $func);
         return $func == '';
@@ -73,4 +77,6 @@ class FuncFactory implements IFactory
 
         return $func;
     }
+
+    // ########################################
 }

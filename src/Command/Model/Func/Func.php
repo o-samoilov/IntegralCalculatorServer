@@ -7,13 +7,18 @@ class Func
     private $func;
     private $vars;
 
+    /// ########################################
+
     public function __construct(string $func, array $vars)
     {
         $this->func = $func;
         $this->vars = $vars;
     }
 
-    public function getValueFunc(array $nums) {
+    // ########################################
+
+    public function getValueFunc(array $nums)
+    {
         if (count($this->vars) != count($nums)) {
             return;
         }
@@ -27,12 +32,17 @@ class Func
         }
 
         $f = 0;
-        eval('$f = '  . $evalStr . ';');
+        eval('$f = ' . $evalStr . ';');
+
         return $f;
     }
+
+    // ########################################
 
     public function getString()
     {
         return $this->func;
     }
+
+    /// ########################################
 }

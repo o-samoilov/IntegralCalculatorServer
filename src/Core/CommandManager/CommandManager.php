@@ -15,9 +15,10 @@ class CommandManager
         $this->input   = $input;
     }
 
-    public function createCommand() {
+    public function createCommand()
+    {
         $commandFactory = new CommandFactory();
-        $command = $commandFactory->create([
+        $command        = $commandFactory->create([
             'alias'   => $this->alias,
             'version' => $this->version,
             'input'   => $this->input,

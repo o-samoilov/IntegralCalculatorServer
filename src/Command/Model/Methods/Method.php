@@ -14,18 +14,26 @@ abstract class Method
 
     public $sum = 0;
 
+    // ########################################
+
     abstract function process();
 
-    public function getOutput() {
+    // ########################################
+
+    public function getOutput()
+    {
         return round($this->sum, 3);
     }
 
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
+    // ########################################
 }

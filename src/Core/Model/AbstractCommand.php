@@ -4,6 +4,8 @@ namespace IntegralCalculator\Core\Model;
 
 abstract class AbstractCommand
 {
+    // ########################################
+
     public $output;
 
     public function validate(array $input)
@@ -19,4 +21,6 @@ abstract class AbstractCommand
     abstract function process();
 
     abstract function set(array $input);
+
+    // ########################################
 }

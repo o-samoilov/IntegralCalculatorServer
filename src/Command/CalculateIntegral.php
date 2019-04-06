@@ -19,6 +19,8 @@ class CalculateIntegral extends AbstractCommand
     private $xMax;
     private $methods;
 
+    // ########################################
+
     public function validate(array $input)
     {
         if (!isset($input['func'])) {
@@ -47,9 +49,11 @@ class CalculateIntegral extends AbstractCommand
         return true;
     }
 
+    // ########################################
+
     public function set(array $input)
     {
-        $funcFactory =  new FuncFactory();
+        $funcFactory = new FuncFactory();
 
         $this->func    = $funcFactory->create($input['func']);
         $this->surface = $funcFactory->create($input['surface']);
@@ -58,20 +62,25 @@ class CalculateIntegral extends AbstractCommand
         $this->methods = $input['methods'];
     }
 
+    // ########################################
+
     public function process()
     {
-
         $intervals = $this->getAllowedIntervals();
         if (is_infinite($intervals)) {
             $this->output = array_merge($this->getMetadata(), $this->getIntegralSumWithStaticValue('Infinity'));
+
             return;
         } elseif (count($intervals) == 0) {
             $this->output = array_merge($this->getMetadata(), $this->getIntegralSumWithStaticValue('0'));
+
             return;
         }
 
         $this->output = array_merge($this->getMetadata($intervals), $this->getIntegralSum($intervals));
     }
+
+    // ########################################
 
     /*
      * return array|INF
@@ -83,7 +92,6 @@ class CalculateIntegral extends AbstractCommand
         $startInterval = $this->xMin;
 
         for ($x = $this->xMin; $x <= $this->xMax; $x += self::STEP) {
-
             $y = $this->func->getValueFunc(['x' => $x]);
             $z = $this->surface->getValueFunc(['x' => $x, 'y' => $y]);
 
@@ -117,7 +125,10 @@ class CalculateIntegral extends AbstractCommand
         return $intervals;
     }
 
-    private function getMetadata($intervals = []) {
+    // ########################################
+
+    private function getMetadata($intervals = [])
+    {
         $intervalsOutput = [];
 
         foreach ($intervals as $interval) {
@@ -148,6 +159,8 @@ class CalculateIntegral extends AbstractCommand
         ];
     }
 
+    // ########################################
+
     private function getIntegralSum(array $intervals)
     {
         $integralSum = [
@@ -155,7 +168,6 @@ class CalculateIntegral extends AbstractCommand
         ];
 
         foreach ($this->methods as $methodId) {
-
             $method = (new MethodFactory())->create([
                 'method_id' => $methodId,
                 'func'      => $this->func,
@@ -175,6 +187,8 @@ class CalculateIntegral extends AbstractCommand
         return $integralSum;
     }
 
+    // ########################################
+
     private function getIntegralSumWithStaticValue(string $value)
     {
         $integralSum = [
@@ -182,7 +196,6 @@ class CalculateIntegral extends AbstractCommand
         ];
 
         foreach ($this->methods as $methodId) {
-
             $methodMetadata = MainConfigs::getInstance()->getMethodMetadata($methodId);
 
             $integralSum['integral_sum'][] = [
@@ -194,4 +207,6 @@ class CalculateIntegral extends AbstractCommand
 
         return $integralSum;
     }
+
+    // ########################################
 }
