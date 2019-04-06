@@ -1,11 +1,13 @@
 <?php
 
-namespace IntegralCalculator\Core\CommandManager;
+namespace IntegralCalculator\Core\Command\Manager;
 
 use IntegralCalculator\Core\Model\IFactory;
 
-class CommandManagerFactory implements IFactory
+class Factory implements IFactory
 {
+    // ########################################
+
     public function create(array $data)
     {
         if (!isset($data['command'])) {
@@ -25,10 +27,12 @@ class CommandManagerFactory implements IFactory
             throw new \Exception('Invalid command');
         }
 
-        return new CommandManager(
+        return new \IntegralCalculator\Core\Command\Manager(
             $data['command'],
             $version,
             $data['params']
         );
     }
+
+    // ########################################
 }

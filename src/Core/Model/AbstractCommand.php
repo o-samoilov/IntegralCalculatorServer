@@ -20,7 +20,7 @@ abstract class AbstractCommand
 
     abstract function process();
 
-    abstract function set(array $input);
+    abstract function setInput(array $input);
 
     // ########################################
 }

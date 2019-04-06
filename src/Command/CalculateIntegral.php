@@ -51,7 +51,7 @@ class CalculateIntegral extends AbstractCommand
 
     // ########################################
 
-    public function set(array $input)
+    public function setInput(array $input)
     {
         $funcFactory = new FuncFactory();
 

@@ -1,12 +1,14 @@
 <?php
 
-namespace IntegralCalculator\Core\CommandManager;
+namespace IntegralCalculator\Core\Command;
 
-class CommandManager
+class Manager
 {
     private $alias;
     private $version;
     private $input;
+
+    // ########################################
 
     public function __construct(string $alias, int $version, array $input)
     {
@@ -15,9 +17,11 @@ class CommandManager
         $this->input   = $input;
     }
 
+    // ########################################
+
     public function createCommand()
     {
-        $commandFactory = new CommandFactory();
+        $commandFactory = new Factory();
         $command        = $commandFactory->create([
             'alias'   => $this->alias,
             'version' => $this->version,
@@ -26,4 +30,6 @@ class CommandManager
 
         return $command;
     }
+
+    // ########################################
 }

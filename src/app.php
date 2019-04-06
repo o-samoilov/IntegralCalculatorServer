@@ -2,8 +2,6 @@
 
 namespace IntegralCalculator;
 
-use IntegralCalculator\Core\CommandManager\CommandManagerFactory;
-
 class App
 {
     // ########################################
@@ -14,7 +12,7 @@ class App
 
             $data = (array)json_decode(trim(file_get_contents('php://input')), true);
 
-            $commandManager = (new CommandManagerFactory())->create($data);
+            $commandManager = (new \IntegralCalculator\Core\Command\Manager\Factory())->create($data);
             $command        = $commandManager->createCommand();
 
             $command->process();

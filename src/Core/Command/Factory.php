@@ -1,11 +1,11 @@
 <?php
 
-namespace IntegralCalculator\Core\CommandManager;
+namespace IntegralCalculator\Core\Command;
 
 use IntegralCalculator\Configs\MainConfigs;
 use IntegralCalculator\Core\Model\IFactory;
 
-class CommandFactory implements IFactory
+class Factory implements IFactory
 {
     // ########################################
 
@@ -16,11 +16,12 @@ class CommandFactory implements IFactory
             $params['version']
         );
 
+        /** @var \IntegralCalculator\Core\Model\AbstractCommand $command */
         $command = new $commandClass();
         if (!$command->validate($params['input'])) {
             throw new \Exception('Invalid params');
         }
-        $command->set($params['input']);
+        $command->setInput($params['input']);
 
         return $command;
     }
