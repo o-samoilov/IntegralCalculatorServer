@@ -13,10 +13,16 @@ class CalculateIntegral extends AbstractCommand
     private const EPS      = 0.0001;
     private const INFINITY = 10000;//10k
 
+    /** @var \IntegralCalculator\Command\Model\Func\Func */
     private $func;
+
+    /** @var \IntegralCalculator\Command\Model\Func\Func */
     private $surface;
+
     private $xMin;
+
     private $xMax;
+
     private $methods;
 
     // ########################################
