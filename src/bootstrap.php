@@ -24,9 +24,9 @@ class Bootstrap
         spl_autoload_register(function ($class_name) {
             $classPathArray = explode('\\', $class_name);
             unset($classPathArray[0]);
-            $classPath = implode('\\', $classPathArray);
+            $classPath = implode('/', $classPathArray);
 
-            $path = __DIR__ . '\\' . $classPath . '.php';
+            $path = __DIR__ . '/' . $classPath . '.php';
             include $path;
         });
     }
